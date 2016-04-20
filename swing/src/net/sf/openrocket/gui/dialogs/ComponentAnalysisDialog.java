@@ -42,6 +42,7 @@ import net.sf.openrocket.aerodynamics.AerodynamicForces;
 import net.sf.openrocket.aerodynamics.FlightConditions;
 import net.sf.openrocket.aerodynamics.Warning;
 import net.sf.openrocket.aerodynamics.WarningSet;
+import net.sf.openrocket.aerodynamics.AerodynamicTable;
 import net.sf.openrocket.gui.adaptors.Column;
 import net.sf.openrocket.gui.adaptors.ColumnTable;
 import net.sf.openrocket.gui.adaptors.ColumnTableModel;
@@ -444,7 +445,8 @@ public class ComponentAnalysisDialog extends JDialog implements StateChangeListe
 		
 		// Buttons
 		JButton button;
-		
+		JButton exportAeroTablebtn;
+
 		// TODO: LOW: printing
 		//		button = new JButton("Print");
 		//		button.addActionListener(new ActionListener() {
@@ -470,8 +472,19 @@ public class ComponentAnalysisDialog extends JDialog implements StateChangeListe
 			}
 		});
 		panel.add(button, "span, split, tag cancel");
-		
-		
+
+		// Export Aerodynamic Table Button
+		exportAeroTablebtn = new JButton("Export Aerodynmic Table");  //TODO: HIGH: Translation for this
+		exportAeroTablebtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AerodynamicTable table = new AerodynamicTable();
+				System.out.println("Push Event: Export Aerodynmic Table Button" + table.toString());
+			}
+		});
+		panel.add(exportAeroTablebtn, "split");
+
+
 		this.setLocationByPlatform(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		pack();

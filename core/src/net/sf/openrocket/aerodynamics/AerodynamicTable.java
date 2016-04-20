@@ -20,7 +20,7 @@ import net.sf.openrocket.util.Coordinate;
 
 public class AerodynamicTable {
 
-	private AerodynamicTable() {
+	public AerodynamicTable() {
 	}
 
 }
