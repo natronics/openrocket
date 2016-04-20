@@ -474,12 +474,14 @@ public class ComponentAnalysisDialog extends JDialog implements StateChangeListe
 		panel.add(button, "span, split, tag cancel");
 
 		// Export Aerodynamic Table Button
-		exportAeroTablebtn = new JButton("Export Aerodynmic Table");  //TODO: HIGH: Translation for this
+		exportAeroTablebtn = new JButton("Export Aerodynamic Table");  //TODO: HIGH: Translation for this
 		exportAeroTablebtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AerodynamicTable table = new AerodynamicTable();
-				System.out.println("Push Event: Export Aerodynmic Table Button" + table.toString());
+				System.out.println("Push Event: Export Aerodynamic Table Button");
+				// Initialize table instance with current configuration
+				AerodynamicTable table = new AerodynamicTable(configuration);
+				table.getTable();
 			}
 		});
 		panel.add(exportAeroTablebtn, "split");
