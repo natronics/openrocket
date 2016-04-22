@@ -16,6 +16,7 @@ import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
+import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -54,6 +56,8 @@ import net.sf.openrocket.gui.components.StyledLabel;
 import net.sf.openrocket.gui.components.UnitSelector;
 import net.sf.openrocket.gui.scalefigure.RocketPanel;
 import net.sf.openrocket.gui.util.GUIUtil;
+import net.sf.openrocket.gui.util.FileHelper;
+import net.sf.openrocket.gui.util.SwingPreferences;
 import net.sf.openrocket.l10n.Translator;
 import net.sf.openrocket.masscalc.BasicMassCalculator;
 import net.sf.openrocket.masscalc.MassCalculator;
@@ -478,10 +482,25 @@ public class ComponentAnalysisDialog extends JDialog implements StateChangeListe
 		exportAeroTablebtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Push Event: Export Aerodynamic Table Button");
+				// Trigger a file chooser for the export
+				JFileChooser chooser = new JFileChooser();
+				chooser.setFileFilter(FileHelper.CSV_FILE_FILTER);
+				chooser.setCurrentDirectory(((SwingPreferences) Application.getPreferences()).getDefaultDirectory());
+
+				if (chooser.showSaveDialog(singletonDialog) != JFileChooser.APPROVE_OPTION)
+					return;
+
+				File file = chooser.getSelectedFile();
+				if (file == null)
+					return;
+
+				file = FileHelper.ensureExtension(file, "csv");
+				if (!FileHelper.confirmWrite(file, singletonDialog))
+					return;
+
 				// Initialize table instance with current configuration
 				AerodynamicTable table = new AerodynamicTable(configuration);
-				table.getTable();
+				table.writeTable(file);
 			}
 		});
 		panel.add(exportAeroTablebtn, "split");
